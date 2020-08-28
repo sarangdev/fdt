@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FDT TEST</title>
+</head>
+
+<body>
+    <form>
+        <input type="number" name="one"> +
+        <input type="number" name="two">
+        <button>Sent</button>
+        <span id="status"></span>
+    </form>
+</body>
+<!-- The core Firebase JS SDK is always required and must be listed first -->
+<script src="https://www.gstatic.com/firebasejs/7.16.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/7.16.1/firebase-database.js"></script>
+<script src="https://www.gstatic.com/firebasejs/7.16.1/firebase-firestore.js"></script>
+<script src="./fdt_client.js"></script>
+<script>
+    // Connect Firebase
+    var firebaseConfig = {
+        // Your firebase config here
+    }
+    firebase.initializeApp(firebaseConfig)
+
+    fdt.path = "requests"
+
+    // Form submit event
+    document.querySelector('form').onsubmit = e => {
+        // Prevent default aciton
+        e.preventDefault()
+            // Print
+        document.querySelector('#status').innerText = "Process request..."
+            // Send request
+        fdt.process(
+            // Method name
+            "calc",
+            // Method params
+            {
+                a: Number(document.querySelector('input[name="one"]').value),
+                b: Number(document.querySelector('input[name="two"]').value)
+            },
+            // Settings
+            {
+                // available params:
+                /**
+                 * cluster - Server id for target request
+                */
+            }
+        ).then(res => {
+            // Print answer
+            document.querySelector('#status').innerText = "Answer: " + res
+        })
+    }
+</script>
+
+</html>
